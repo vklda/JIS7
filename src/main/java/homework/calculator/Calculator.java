@@ -11,10 +11,11 @@ public class Calculator {
     String operator;
 
     public static void main(String[] args) {
+
         new Calculator().start();
     }
 
-    private void start() {
+    public void start() {
         System.out.print("Введите число 'a': ");
         a = Double.parseDouble(readLine());
         System.out.print("Выберите оператор '+' '-' '*' '/' '%': ");
