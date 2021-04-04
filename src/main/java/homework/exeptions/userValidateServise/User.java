@@ -1,5 +1,7 @@
 package homework.exeptions.userValidateServise;
 
+import homework.exeptions.userValidateServise.exceptions.UserValidationException;
+
 public class User {
     private String firstName;
     private String secondName;
@@ -14,15 +16,28 @@ public class User {
     public User() {
     }
 
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setSecondName(String secondName) {
+        this.secondName = secondName;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+
     public String getFirstName() {
-        return firstName;
+        return this.firstName;
     }
 
     public String getSecondName() {
-        return secondName;
+        return this.secondName;
     }
 
     public int getAge() {
-        return age;
+        return this.age;
     }
 }
