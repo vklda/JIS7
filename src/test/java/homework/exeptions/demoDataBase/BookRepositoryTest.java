@@ -62,6 +62,7 @@ class BookRepositoryTest {
             logger.info(e.getMessage());
         }
     }
+
     @Test
     public void removesBookWithRealId() {
         try {
@@ -71,10 +72,11 @@ class BookRepositoryTest {
             logger.info(e.getMessage());
         }
     }
+
     @Test
-    public void findAllBooks(){
+    public void findAllBooks() {
         List<Book> bookList = bookRepository.findAll();
-        for(Book books: bookList){
+        for (Book books : bookList) {
             logger.info(books.toString());
         }
     }
