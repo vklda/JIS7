@@ -1,5 +1,5 @@
 package homework.arrays;
-
+//*******Checked**********
 import java.util.Arrays;
 
 public class ArraysFirstTask {
