@@ -1,5 +1,5 @@
 package homework.arrays;
-
+//*******Checked**********
 import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
@@ -30,7 +30,7 @@ public class ArraysSecondTask {
     private static int readLine() throws IOException {
         var reader = new BufferedReader(new InputStreamReader(System.in));
         logger.info("Введите желаемый размер массива: ");
-        int masSize = Integer.parseInt(reader.readLine());
+        int masSize = Integer.parseInt(reader.readLine()); //Нету проверки. Можешь словить IOException если я нехороший человек введу не число)
         return masSize;
     }
 
