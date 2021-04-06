@@ -1,6 +1,6 @@
 package homework.exeptions.userValidateServise;
 
-
+//********Checked********
 import homework.exeptions.userValidateServise.exceptions.UserValidationException;
 import org.apache.log4j.Logger;
 
