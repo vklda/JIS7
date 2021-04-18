@@ -5,6 +5,7 @@ public class SubtractionOperation implements MathOperation<Double> {
 
     @Override
     public Double compute(Double a, Double b) {
-        return a - b;
+        MathOperation<Double> subtraction = (firstNumber, secondNumber) -> a - b;
+        return subtraction.compute(a, b);
     }
 }
