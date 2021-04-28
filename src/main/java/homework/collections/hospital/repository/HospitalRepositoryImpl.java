@@ -12,6 +12,45 @@ public class HospitalRepositoryImpl implements HospitalRepository<Doctor, Patien
 
     private static final Map<Doctor, Map<Time, List<Patient>>> repository = new HashMap();
 
+    @Override
+    public void reservate(Doctor doctor, Time time, Patient patient) {
+        if (patient.isPaid()) {
+            if (isDoctorHasFreeTime(doctor, time)) {
+                book(doctor, time, patient);
+            } else if (isDoctorBusy(doctor, time)) {
+                time = chooseNextTime(time);
+                reservate(doctor, time, patient);
+            }
+        } else throw new PatientDontPaidException("Should pay before reservation");
+    }
+
+    @Override
+    public void cancelReservation(Patient patient, Time time) {
+
+    }
+
+    @Override
+    public Map<Doctor, Map<Time, List<Patient>>> findReservationByPatient(Patient patient) {
+        return null;
+    }
+
+    @Override
+    public Map<Doctor, Map<Time, List<Patient>>> findAllReservations() {
+        Map<Doctor, Map<Time, List<Patient>>> allReservations = new HashMap<>();
+        for (Map.Entry<Doctor, Map<Time, List<Patient>>> repositoryEntry : repository.entrySet()) {
+            Map<Time, List<Patient>> schedule = new TreeMap<>();
+            for (Map.Entry<Time, List<Patient>> scheduleEntry : repositoryEntry.getValue().entrySet()) {
+                if (!scheduleEntry.getValue().isEmpty()) {
+                    schedule.put(scheduleEntry.getKey(), scheduleEntry.getValue());
+                }
+            }
+            if (schedule.size() != 0) {
+                allReservations.put(repositoryEntry.getKey(), schedule);
+            }
+        }
+        return allReservations;
+    }
+
     public void initialize(List<Doctor> doctors) {
         if (repository.size() == 0) {
             addDoctorListToRepository(doctors);
@@ -31,18 +70,6 @@ public class HospitalRepositoryImpl implements HospitalRepository<Doctor, Patien
         schedule.put(Time.ELEVEN, new ArrayList<>(2));
         schedule.put(Time.FORTEEN, new ArrayList<>(2));
         schedule.put(Time.FIFTEEN, new ArrayList<>(2));
-    }
-
-    @Override
-    public void reservate(Doctor doctor, Time time, Patient patient) {
-        if(patient.isPaid()){
-            if (isDoctorHasFreeTime(doctor, time)) {
-                book(doctor, time, patient);
-            } else if (isDoctorBusy(doctor, time)) {
-                time = chooseNextTime(time);
-                reservate(doctor, time, patient);
-            }
-        }else throw new PatientDontPaidException("Should pay before reservation");
     }
 
     private void book(Doctor doctor, Time time, Patient patient) {
@@ -76,29 +103,5 @@ public class HospitalRepositoryImpl implements HospitalRepository<Doctor, Patien
 
     private boolean isDoctorHasFreeTime(Doctor doctor, Time time) {
         return repository.get(doctor).get(time).size() < 2;
-    }
-
-    @Override
-    public void cancelReservation(Patient patient, Time time) {
-
-    }
-
-    @Override
-    public Map<Doctor, Map<Time, List<Patient>>> findAllReservations() {
-        Map<Doctor, Map<Time, List<Patient>>> allReservations = new HashMap<>();
-
-        for (Map.Entry<Doctor, Map<Time, List<Patient>>> repositoryEntry : repository.entrySet()) {
-            Map<Time, List<Patient>> schedule = new TreeMap<>();
-            schedule.clear();
-            for (Map.Entry<Time, List<Patient>> scheduleEntry : repositoryEntry.getValue().entrySet()) {
-                if (!scheduleEntry.getValue().isEmpty()) {
-                    schedule.put(scheduleEntry.getKey(), scheduleEntry.getValue());
-                }
-            }
-            if (schedule.size() != 0) {
-                allReservations.put(repositoryEntry.getKey(), schedule);
-            }
-        }
-        return allReservations;
     }
 }

@@ -13,5 +13,7 @@ public interface HospitalRepository<Doctor, Patient, Time> {
 
     void cancelReservation(Patient patient, Time time);
 
+    Map<Doctor, Map<Time, List<Patient>>> findReservationByPatient(Patient patient);
+
     Map<Doctor, Map<Time, List<Patient>>> findAllReservations();
 }
