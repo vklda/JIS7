@@ -31,7 +31,23 @@ public class HospitalRepositoryImpl implements HospitalRepository<Doctor, Patien
 
     @Override
     public Map<Doctor, Map<Time, List<Patient>>> findReservationByPatient(Patient patient) {
-        return null;
+        Map<Doctor, Map<Time, List<Patient>>> allReservations = new HashMap<>();
+        for (Map.Entry<Doctor, Map<Time, List<Patient>>> repositoryEntry : repository.entrySet()) {
+            Map<Time, List<Patient>> schedule = new TreeMap<>();
+            for (Map.Entry<Time, List<Patient>> scheduleEntry : repositoryEntry.getValue().entrySet()) {
+                for (Patient patientFromRepository : scheduleEntry.getValue()) {
+                    List<Patient> patientList = new ArrayList<>();
+                    if (patientFromRepository.equals(patient)) {
+                        patientList.add(patient);
+                        schedule.put(scheduleEntry.getKey(), patientList);
+                    }
+                }
+            }
+            if (schedule.size() != 0) {
+                allReservations.put(repositoryEntry.getKey(), schedule);
+            }
+        }
+        return allReservations;
     }
 
     @Override

@@ -30,4 +30,8 @@ public class HospitalService {
     public Map<Doctor, Map<Time, List<Patient>>> findAllReservations() {
         return hospitalRepository.findAllReservations();
     }
+
+    public Map<Doctor, Map<Time, List<Patient>>> findReservationByPatient(Patient patient) {
+        return hospitalRepository.findReservationByPatient(patient);
+    }
 }
