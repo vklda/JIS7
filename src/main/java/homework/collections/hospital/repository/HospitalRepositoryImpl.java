@@ -25,8 +25,8 @@ public class HospitalRepositoryImpl implements HospitalRepository<Doctor, Patien
     }
 
     @Override
-    public void cancelReservation(Patient patient, Time time) {
-
+    public void cancelReservation(Doctor doctor, Time time, Patient patient) {
+        repository.get(doctor).get(time).remove(patient);
     }
 
     @Override
@@ -80,7 +80,7 @@ public class HospitalRepositoryImpl implements HospitalRepository<Doctor, Patien
         }
     }
 
-    private void addScheduleAllTimeValues(Doctor doctor) {
+    private void addScheduleAllTimeValues(Doctor doctor) {   // инициализация мапы time-patient
         Map<Time, List<Patient>> schedule = repository.get(doctor);
         schedule.put(Time.TEN, new ArrayList<>(2));
         schedule.put(Time.ELEVEN, new ArrayList<>(2));

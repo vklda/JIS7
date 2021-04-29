@@ -23,8 +23,8 @@ public class HospitalService {
         hospitalRepository.reservate(doctor, time, patient);
     }
 
-    public void cancelReservation(Patient patient, Time time) {
-        hospitalRepository.cancelReservation(patient, time);
+    public void cancelReservation(Doctor doctor, Time time, Patient patient) {
+        hospitalRepository.cancelReservation(doctor, time, patient);
     }
 
     public Map<Doctor, Map<Time, List<Patient>>> findAllReservations() {
