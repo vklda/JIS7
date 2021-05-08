@@ -7,7 +7,8 @@ import homework.collections.hospital.model.Time;
 import homework.collections.hospital.repository.HospitalRepositoryImpl;
 import homework.collections.hospital.service.HospitalService;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HospitalApp {
     public static void main(String[] args) {

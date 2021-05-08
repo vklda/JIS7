@@ -33,10 +33,10 @@ public class HospitalRepositoryImpl implements HospitalRepository<Doctor, Patien
     public Map<Doctor, Map<Time, List<Patient>>> findReservationByPatient(Patient patient) {
         Map<Doctor, Map<Time, List<Patient>>> allReservations = new HashMap<>();
         for (Map.Entry<Doctor, Map<Time, List<Patient>>> repositoryEntry : repository.entrySet()) {
-            Map<Time, List<Patient>> schedule = new TreeMap<>();
+            var schedule = new TreeMap<Time, List<Patient>>();
             for (Map.Entry<Time, List<Patient>> scheduleEntry : repositoryEntry.getValue().entrySet()) {
                 for (Patient patientFromRepository : scheduleEntry.getValue()) {
-                    List<Patient> patientList = new ArrayList<>();
+                    var patientList = new ArrayList<Patient>();
                     if (patientFromRepository.equals(patient)) {
                         patientList.add(patient);
                         schedule.put(scheduleEntry.getKey(), patientList);
@@ -52,9 +52,9 @@ public class HospitalRepositoryImpl implements HospitalRepository<Doctor, Patien
 
     @Override
     public Map<Doctor, Map<Time, List<Patient>>> findAllReservations() {
-        Map<Doctor, Map<Time, List<Patient>>> allReservations = new HashMap<>();
+        var allReservations = new HashMap<Doctor, Map<Time, List<Patient>>>();
         for (Map.Entry<Doctor, Map<Time, List<Patient>>> repositoryEntry : repository.entrySet()) {
-            Map<Time, List<Patient>> schedule = new TreeMap<>();
+            var schedule = new TreeMap<Time, List<Patient>>();
             for (Map.Entry<Time, List<Patient>> scheduleEntry : repositoryEntry.getValue().entrySet()) {
                 if (!scheduleEntry.getValue().isEmpty()) {
                     schedule.put(scheduleEntry.getKey(), scheduleEntry.getValue());
@@ -81,7 +81,7 @@ public class HospitalRepositoryImpl implements HospitalRepository<Doctor, Patien
     }
 
     private void addScheduleAllTimeValues(Doctor doctor) {   // инициализация мапы time-patient
-        Map<Time, List<Patient>> schedule = repository.get(doctor);
+        var schedule = repository.get(doctor);
         schedule.put(Time.TEN, new ArrayList<>(2));
         schedule.put(Time.ELEVEN, new ArrayList<>(2));
         schedule.put(Time.FORTEEN, new ArrayList<>(2));
@@ -91,7 +91,7 @@ public class HospitalRepositoryImpl implements HospitalRepository<Doctor, Patien
     private void book(Doctor doctor, Time time, Patient patient) {
         List<Patient> patientList = repository.get(doctor).get(time);
         patientList.add(patient);
-        TreeMap<Time, List<Patient>> scheduleForTime = new TreeMap<>(repository.get(doctor));
+        var scheduleForTime = new TreeMap<>(repository.get(doctor));
         scheduleForTime.put(time, patientList);
         repository.put(doctor, scheduleForTime);
     }
