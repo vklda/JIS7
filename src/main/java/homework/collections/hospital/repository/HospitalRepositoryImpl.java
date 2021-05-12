@@ -2,6 +2,7 @@ package homework.collections.hospital.repository;
 
 import homework.collections.hospital.exceptions.DoctorHasntAvailableTimeException;
 import homework.collections.hospital.exceptions.PatientDontPaidException;
+import homework.collections.hospital.exceptions.ReservationNotFoundException;
 import homework.collections.hospital.model.Doctor;
 import homework.collections.hospital.model.Patient;
 import homework.collections.hospital.model.Time;
@@ -31,6 +32,7 @@ public class HospitalRepositoryImpl implements HospitalRepository<Doctor, Patien
 
     @Override
     public Map<Doctor, Map<Time, List<Patient>>> findReservationByPatient(Patient patient) {
+        int counter = 0;
         Map<Doctor, Map<Time, List<Patient>>> allReservations = new HashMap<>();
         for (Map.Entry<Doctor, Map<Time, List<Patient>>> repositoryEntry : repository.entrySet()) {
             var schedule = new TreeMap<Time, List<Patient>>();
@@ -40,12 +42,16 @@ public class HospitalRepositoryImpl implements HospitalRepository<Doctor, Patien
                     if (patientFromRepository.equals(patient)) {
                         patientList.add(patient);
                         schedule.put(scheduleEntry.getKey(), patientList);
+                        counter++;
                     }
                 }
             }
             if (schedule.size() != 0) {
                 allReservations.put(repositoryEntry.getKey(), schedule);
             }
+        }
+        if (counter == 0) {
+            throw new ReservationNotFoundException("Reservation by patient '" + patient.getSecondName() + "' not found");
         }
         return allReservations;
     }
@@ -65,6 +71,10 @@ public class HospitalRepositoryImpl implements HospitalRepository<Doctor, Patien
             }
         }
         return allReservations;
+    }
+
+    public static void clear() {
+        repository.clear();
     }
 
     public void initialize(List<Doctor> doctors) {

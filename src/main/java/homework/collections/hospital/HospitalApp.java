@@ -32,7 +32,6 @@ public class HospitalApp {
         hospitalService.reservate(doctorList.get(0), Time.FIFTEEN, patientList.get(3));
         System.out.println(hospitalService.findAllReservations());
         System.out.println(hospitalService.findReservationByPatient(patientList.get(0)));
-        hospitalService.cancelReservation(doctorList.get(0), Time.ELEVEN, patientList.get(0));
-        System.out.println(hospitalService.findReservationByPatient(patientList.get(0)));
+       // hospitalService.cancelReservation(doctorList.get(0), Time.ELEVEN, patientList.get(0));
     }
 }

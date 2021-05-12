@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 public class HospitalService {
-    HospitalRepositoryImpl hospitalRepository;
+
+    private final HospitalRepositoryImpl hospitalRepository;
 
     public HospitalService(HospitalRepositoryImpl hospitalRepository) {
         this.hospitalRepository = hospitalRepository;
