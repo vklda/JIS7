@@ -1,4 +1,4 @@
-package homework.collections.hospital.repository;
+package homework.collections.hospital.service;
 
 import homework.collections.hospital.exceptions.DoctorHasntAvailableTimeException;
 import homework.collections.hospital.exceptions.PatientDontPaidException;
@@ -9,9 +9,11 @@ import homework.collections.hospital.model.Time;
 
 import java.util.*;
 
-public class HospitalRepositoryImpl implements HospitalRepository<Doctor, Patient, Time> {
+import static homework.collections.hospital.repository.HospitalRepository.repository;
 
-    private static final Map<Doctor, Map<Time, List<Patient>>> repository = new HashMap();
+public class HospitalServiceImpl implements HospitalService<Doctor, Patient, Time> {
+    private final static Integer ZERO = Integer.valueOf(0);
+    private final static Integer TWO = Integer.valueOf(2);
 
     @Override
     public void reservate(Doctor doctor, Time time, Patient patient) {
@@ -32,8 +34,8 @@ public class HospitalRepositoryImpl implements HospitalRepository<Doctor, Patien
 
     @Override
     public Map<Doctor, Map<Time, List<Patient>>> findReservationByPatient(Patient patient) {
-        int counter = 0;
-        Map<Doctor, Map<Time, List<Patient>>> allReservations = new HashMap<>();
+        var counter = 0;
+        var allReservations = new HashMap<Doctor, Map<Time, List<Patient>>>();
         for (Map.Entry<Doctor, Map<Time, List<Patient>>> repositoryEntry : repository.entrySet()) {
             var schedule = new TreeMap<Time, List<Patient>>();
             for (Map.Entry<Time, List<Patient>> scheduleEntry : repositoryEntry.getValue().entrySet()) {
@@ -46,11 +48,11 @@ public class HospitalRepositoryImpl implements HospitalRepository<Doctor, Patien
                     }
                 }
             }
-            if (schedule.size() != 0) {
+            if (schedule.size() != ZERO) {
                 allReservations.put(repositoryEntry.getKey(), schedule);
             }
         }
-        if (counter == 0) {
+        if (counter == ZERO) {
             throw new ReservationNotFoundException("Reservation by patient '" + patient.getSecondName() + "' not found");
         }
         return allReservations;
@@ -66,7 +68,7 @@ public class HospitalRepositoryImpl implements HospitalRepository<Doctor, Patien
                     schedule.put(scheduleEntry.getKey(), scheduleEntry.getValue());
                 }
             }
-            if (schedule.size() != 0) {
+            if (schedule.size() != ZERO) {
                 allReservations.put(repositoryEntry.getKey(), schedule);
             }
         }
@@ -78,19 +80,19 @@ public class HospitalRepositoryImpl implements HospitalRepository<Doctor, Patien
     }
 
     public void initialize(List<Doctor> doctors) {
-        if (repository.size() == 0) {
+        if (repository.size() == ZERO) {
             addDoctorListToRepository(doctors);
         }
     }
 
     private void addDoctorListToRepository(List<Doctor> doctors) {
         for (Doctor doctor : doctors) {
-            repository.put(doctor, new TreeMap<Time, List<Patient>>()); // создаем на каждого врача отдельную мапу
-            addScheduleAllTimeValues(doctor); // она хранит время Enum и ArrayList с размером 2
+            repository.put(doctor, new TreeMap<>());
+            addScheduleAllTimeValues(doctor);
         }
     }
 
-    private void addScheduleAllTimeValues(Doctor doctor) {   // инициализация мапы time-patient
+    private void addScheduleAllTimeValues(Doctor doctor) {
         var schedule = repository.get(doctor);
         schedule.put(Time.TEN, new ArrayList<>(2));
         schedule.put(Time.ELEVEN, new ArrayList<>(2));
@@ -99,7 +101,7 @@ public class HospitalRepositoryImpl implements HospitalRepository<Doctor, Patien
     }
 
     private void book(Doctor doctor, Time time, Patient patient) {
-        List<Patient> patientList = repository.get(doctor).get(time);
+        var patientList = repository.get(doctor).get(time);
         patientList.add(patient);
         var scheduleForTime = new TreeMap<>(repository.get(doctor));
         scheduleForTime.put(time, patientList);
@@ -124,10 +126,10 @@ public class HospitalRepositoryImpl implements HospitalRepository<Doctor, Patien
     }
 
     private boolean isDoctorBusy(Doctor doctor, Time time) {
-        return repository.get(doctor).get(time).size() == 2;
+        return repository.get(doctor).get(time).size() == TWO;
     }
 
     private boolean isDoctorHasFreeTime(Doctor doctor, Time time) {
-        return repository.get(doctor).get(time).size() < 2;
+        return repository.get(doctor).get(time).size() < TWO;
     }
 }

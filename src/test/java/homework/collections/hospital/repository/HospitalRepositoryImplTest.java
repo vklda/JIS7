@@ -6,7 +6,7 @@ import homework.collections.hospital.model.Doctor;
 import homework.collections.hospital.model.DoctorTypes;
 import homework.collections.hospital.model.Patient;
 import homework.collections.hospital.model.Time;
-import homework.collections.hospital.service.HospitalService;
+import homework.collections.hospital.service.HospitalServiceImpl;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
@@ -15,23 +15,21 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class HospitalRepositoryImplTest {
     private static final Logger logger = Logger.getLogger(HospitalRepositoryImplTest.class);
 
-    HospitalService hospitalService;
+    HospitalServiceImpl hospitalService;
     List<Doctor> doctorList;
 
     @BeforeEach
     void setUp() {
-        hospitalService = new HospitalService(new HospitalRepositoryImpl());
-        doctorList = new ArrayList<Doctor>();
+        hospitalService = new HospitalServiceImpl();
+        doctorList = new ArrayList<>();
         doctorList.add(new Doctor("Петр", "Иванов", DoctorTypes.NEUROLOGIS));
         doctorList.add(new Doctor("Дмитрий", "Костоправов", DoctorTypes.SURGEON));
         doctorList.add(new Doctor("Максим", "Быковский", DoctorTypes.OTOLARYNGOLOGIST));
@@ -42,7 +40,7 @@ class HospitalRepositoryImplTest {
 
     @AfterEach
     void clean() {
-        HospitalRepositoryImpl.clear();
+        HospitalServiceImpl.clear();
     }
 
 
