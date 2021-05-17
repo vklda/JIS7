@@ -1,4 +1,4 @@
-package homework.task1;
+package homework.streamapi.task1;
 
 import org.apache.log4j.Logger;
 
