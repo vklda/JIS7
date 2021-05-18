@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -40,7 +41,8 @@ public class App {
     private static Product findCheapestProductWithHighestDiscount(Product[] products) {
         Comparator<Product> comparatorByPrice = Comparator.comparing(Product::getPrice);
         Comparator<Product> comparatorByDiscount = (p1, p2) -> p2.getDiscount().compareTo(p1.getDiscount());
-        return (Product) Arrays.stream(products)
+        return Arrays.stream(products)
+                .filter(Objects::nonNull)
                 .min(comparatorByDiscount.thenComparing(comparatorByPrice))
                 .orElse(null);
     }
@@ -48,6 +50,7 @@ public class App {
     private static Product findProductWithHighestPriceWithoutDiscount(Product[] products) {
         final var ZERO = 0;
         return Arrays.stream(products)
+                .filter(Objects::nonNull)
                 .filter(product -> product.getDiscount() == ZERO)
                 .min((p1, p2) -> p2.getPrice().compareTo(p1.getPrice()))
                 .orElse(null);
