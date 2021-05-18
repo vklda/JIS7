@@ -38,25 +38,19 @@ public class App {
     }
 
     private static Product findCheapestProductWithHighestDiscount(Product[] products) {
-        Comparator<Product> comparatorByPrice = (p1, p2) -> p1.getPrice().compareTo(p2.getPrice());
+        Comparator<Product> comparatorByPrice = Comparator.comparing(Product::getPrice);
         Comparator<Product> comparatorByDiscount = (p1, p2) -> p2.getDiscount().compareTo(p1.getDiscount());
-        var list = Arrays.stream(products)
-                .sorted(comparatorByDiscount.thenComparing(comparatorByPrice))
-                .collect(Collectors.toList());
-        var filteredArray = new Product[list.size()];
-        list.toArray(filteredArray);
-        return filteredArray[0];
+        return (Product) Arrays.stream(products)
+                .min(comparatorByDiscount.thenComparing(comparatorByPrice))
+                .orElse(null);
     }
 
     private static Product findProductWithHighestPriceWithoutDiscount(Product[] products) {
         final var ZERO = 0;
-        var list = Arrays.stream(products)
+        return Arrays.stream(products)
                 .filter(product -> product.getDiscount() == ZERO)
-                .sorted((p1, p2) -> p2.getPrice().compareTo(p1.getPrice()))
-                .collect(Collectors.toList());
-        var filteredArray = new Product[list.size()];
-        list.toArray(filteredArray);
-        return filteredArray[0];
+                .min((p1, p2) -> p2.getPrice().compareTo(p1.getPrice()))
+                .orElse(null);
     }
 
     private static Product[] findProductsWithHighDiscountAndLowPrice(Product[] products) {
