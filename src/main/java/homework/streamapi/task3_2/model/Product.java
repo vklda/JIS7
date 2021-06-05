@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Product {
-    String name;
-    BigDecimal price;
-    Integer discount;
+    private String name;
+    private BigDecimal price;
+    private Integer discount;
 }

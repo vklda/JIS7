@@ -6,11 +6,9 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 
-public class Service {
-    private Service() {
-    }
+public class ProductService {
 
-    public static Product[] findProductsWithoutDiscount(Product[] products) {
+    public Product[] findProductsWithoutDiscount(Product[] products) {
         final var ZERO = 0;
         var list = Arrays.stream(products)
                 .filter(product -> product.getDiscount().equals(ZERO))
@@ -20,7 +18,7 @@ public class Service {
         return filteredArray;
     }
 
-    public static Product[] sortProductByDiscountAndPrice(Product[] products) {
+    public Product[] sortProductByDiscountAndPrice(Product[] products) {
         var list = Arrays.stream(products)
                 .sorted(Comparator.comparing(Product::getDiscount)
                         .thenComparing(Product::getPrice))

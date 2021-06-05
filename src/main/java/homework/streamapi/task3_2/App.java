@@ -1,12 +1,11 @@
 package homework.streamapi.task3_2;
 
 import homework.streamapi.task3_2.model.Product;
+import homework.streamapi.task3_2.service.ProductService;
 import org.apache.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
-
-import static homework.streamapi.task3_2.service.Service.*;
 
 public class App {
     private static final Logger log = Logger.getLogger(App.class);
@@ -14,11 +13,12 @@ public class App {
     private static final String delimeter = "^_^_^_^_^_^_^_^_^_^_^_^__^_^_^_^_^_^_^_^_^_^_^_^";
 
     public static void main(String[] args) {
+        var productService = new ProductService();
         var products = new Product[10];
         initialize(products);
-        Arrays.stream(findProductsWithoutDiscount(products)).forEach(log::info);
+        Arrays.stream(productService.findProductsWithoutDiscount(products)).forEach(log::info);
         log.info(delimeter);
-        Arrays.stream(sortProductByDiscountAndPrice(products)).forEach(log::info);
+        Arrays.stream(productService.sortProductByDiscountAndPrice(products)).forEach(log::info);
     }
 
     private static void initialize(Product[] products) {
