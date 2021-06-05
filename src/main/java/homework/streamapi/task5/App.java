@@ -22,7 +22,7 @@ public class App {
         userList = initialize();
         log.info("initializing again");
         log.info("sorting and deactivate non adult users");
-        userService.sortByNameAndDeactivateNonAdultUsers(userList).forEach(log::info);
+        userService.increaseUserStatus(userList).forEach(log::info);
     }
 
     private static List<User> initialize() {

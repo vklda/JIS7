@@ -20,7 +20,7 @@ public class UserService {
         });
     }
 
-    public List<User> sortByNameAndDeactivateNonAdultUsers(List<User> userList) {
+    public List<User> increaseUserStatus(List<User> userList) {
         return userList.stream()
                 .sorted(Comparator.comparing(User::getUserName))
                 .peek(this::deactivateIfNonAdult)
