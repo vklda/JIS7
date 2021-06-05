@@ -2,27 +2,27 @@ package homework.streamapi.task5;
 
 import homework.streamapi.task5.model.User;
 import homework.streamapi.task5.model.UserStatus;
+import homework.streamapi.task5.service.UserService;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static homework.streamapi.task5.service.Service.setBetterUserStatusForGuestsAndActiveUsers;
-import static homework.streamapi.task5.service.Service.sortByNameAndDeactivateNonAdultUsers;
 
 public class App {
     public static final Logger log = Logger.getLogger(App.class);
 
     public static void main(String[] args) {
+        var userService = new UserService();
         var userList = initialize();
         userList.forEach(log::info);
         log.info("setting better statuses");
-        setBetterUserStatusForGuestsAndActiveUsers(userList);
+        userService.setBetterUserStatusForGuestsAndActiveUsers(userList);
         userList.forEach(log::info);
         userList = initialize();
         log.info("initializing again");
         log.info("sorting and deactivate non adult users");
-        sortByNameAndDeactivateNonAdultUsers(userList).forEach(log::info);
+        userService.sortByNameAndDeactivateNonAdultUsers(userList).forEach(log::info);
     }
 
     private static List<User> initialize() {
