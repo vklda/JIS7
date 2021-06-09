@@ -23,18 +23,18 @@ public class LecturerServiceImpl implements Service<Lecturer> {
         }
     }
 
-    public void cleanStudents(Lecturer lecturer) {
-        if (Objects.nonNull(lecturer)) {
-            Optional.ofNullable(lecturer.getStudents()).ifPresent(List::clear);
-        }
-    }
-
     public void addStudentsToLecturer(List<Student> students, Lecturer lecturer) {
         List<Student> collect = students.stream()
                 .filter(Objects::nonNull)
                 .filter(student -> !isItHasNullField(student) && !lecturer.getStudents().contains(student))
                 .collect(Collectors.toList());
         lecturer.getStudents().addAll(collect);
+    }
+
+    public void cleanStudents(Lecturer lecturer) {
+        if (Objects.nonNull(lecturer)) {
+            Optional.ofNullable(lecturer.getStudents()).ifPresent(List::clear);
+        }
     }
 
     private boolean isItHasNullField(Student student) {
