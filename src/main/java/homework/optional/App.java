@@ -1,6 +1,5 @@
 package homework.optional;
 
-import homework.optional.model.Lecturer;
 import homework.optional.repository.LecturerRepository;
 import homework.optional.repository.StudentRepository;
 import homework.optional.service.LecturerServiceImpl;
