@@ -6,6 +6,8 @@ import homework.optional.service.LecturerServiceImpl;
 import homework.optional.service.StudentServiceImpl;
 import lombok.extern.log4j.Log4j2;
 
+import java.util.Objects;
+
 import static homework.optional.repository.StudentRepository.studentList;
 
 @Log4j2

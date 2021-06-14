@@ -41,7 +41,7 @@ public class LecturerServiceImpl implements Service<Lecturer> {
     }
 
     private boolean isEqualsBySecondName(String secondName, Lecturer lecturer) {
-        return nonNull(lecturer) && nonNull(lecturer.getSecondName()) && Objects.equals(lecturer.getSecondName(), secondName);
+        return Objects.equals(lecturer.getSecondName(), secondName);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class LecturerServiceImpl implements Service<Lecturer> {
     }
 
     private boolean isEqualsByFirstName(String firstName, Lecturer lecturer) {
-        return nonNull(lecturer.getFirstName()) && lecturer.getFirstName().equals(firstName);
+        return Objects.equals(lecturer.getFirstName(), firstName);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class LecturerServiceImpl implements Service<Lecturer> {
     }
 
     private boolean isEqualsByFullName(String firstName, String secondName, Lecturer lecturer) {
-        return hasNonNullFields(lecturer) && lecturer.getFirstName().equals(firstName) && lecturer.getSecondName().equals(secondName);
+        return Objects.equals(lecturer.getFirstName(), firstName) && Objects.equals(lecturer.getSecondName(), secondName);
     }
 
     @Override
@@ -82,10 +82,6 @@ public class LecturerServiceImpl implements Service<Lecturer> {
         if (nonNull(lecturer)) {
             Optional.ofNullable(lecturer.getStudents()).ifPresent(List::clear);
         }
-    }
-
-    private boolean hasNonNullFields(Lecturer lecturer) {
-        return nonNull(lecturer.getSecondName()) && nonNull(lecturer.getFirstName()) || nonNull(lecturer.getAge()) || nonNull(lecturer.getStudents());
     }
 
     private boolean hasNullField(Student student) {
