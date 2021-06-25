@@ -16,20 +16,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User create(String firstName, String lastName, String username, Status status, String email) throws SQLException {
-        var connection = PostgresConnector.getConnection();
         var sql = "INSERT INTO \"user\" (first_name, last_name, username, status, email) VALUES (?, ?, ?, ?, ?)";
-        var user = new User(0, firstName, lastName, username, status, email);
-        executeUpdate(user, connection, sql);
-        var id = getLastId(connection);
+        var user = new User(firstName, lastName, username, status, email);
+        insertRowToDataBase(user, sql);
+        var id = getLastId();
         user.setId(id);
-        connection.close();
         return user;
     }
 
     @Override
     public Collection<User> findAll() throws SQLException {
         var userList = new ArrayList<User>();
-        var statement = PostgresConnector.getStatement();
+        var connection = getConnection();
+        var statement = connection.createStatement();
         var sql = "SELECT * FROM \"user\";";
         var resultSet = statement.executeQuery(sql);
         while (resultSet.next()) {
@@ -38,17 +37,21 @@ public class UserServiceImpl implements UserService {
         }
         resultSet.close();
         statement.close();
+        connection.close();
         return userList;
     }
 
     @Override
     public User getById(Integer id) throws SQLException {
         var sql = "SELECT id, first_name, last_name, username, status, email FROM \"user\" where id = " + id;
-        var statement = PostgresConnector.getStatement();
+        var connection = getConnection();
+        var statement = connection.createStatement();
         var resultSet = statement.executeQuery(sql);
         if (resultSet.next()) {
             return buildUser(resultSet);
         }
+        statement.close();
+        connection.close();
         return new User();
     }
 
@@ -69,23 +72,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(User user) throws SQLException {
+        var connection = getConnection();
         var sql = "DELETE FROM \"user\" WHERE id = " + user.getId();
-        var statement = PostgresConnector.getStatement();
+        var statement = connection.createStatement();
         statement.execute(sql);
         log.info("user " + user.getUsername() + " has been deleted successfully");
         statement.close();
+        connection.close();
     }
 
     @Override
     public void update(User user) throws SQLException {
-        var connection = PostgresConnector.getConnection();
         String sql = "UPDATE \"user\" SET first_name = ?, last_name = ?, username = ?, status = ?, email = ? WHERE id = " + user.getId();
-        executeUpdate(user, connection, sql);
-        connection.close();
+        insertRowToDataBase(user, sql);
     }
 
-    private int getLastId(Connection connection) throws SQLException {
+    private Connection getConnection() throws SQLException {
+        return PostgresConnector.getConnection();
+    }
+
+    private int getLastId() throws SQLException {
         var sql = "SELECT MAX(id) FROM \"user\"";
+        var connection = getConnection();
         var statement = connection.prepareStatement(sql);
         var id = 0;
         var result = statement.executeQuery();
@@ -93,6 +101,7 @@ public class UserServiceImpl implements UserService {
             id = result.getInt(1);
         }
         statement.close();
+        connection.close();
         return id;
     }
 
@@ -107,16 +116,19 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    private void executeUpdate(User user, Connection connection, String sql) throws SQLException {
+    private void insertRowToDataBase(User user, String sql) throws SQLException {
+        var connection = getConnection();
         var statement = connection.prepareStatement(sql);
         statement.setString(1, user.getFirstName());
         statement.setString(2, user.getLastName());
         statement.setString(3, user.getUsername());
         statement.setString(4, user.getStatus().name());
         statement.setString(5, user.getEmail());
-        int i = statement.executeUpdate();
-        if (i > 0) {
+        int rowsInserted = statement.executeUpdate();
+        if (rowsInserted > 0) {
             log.info("user has been updated/created successfully");
         }
+        statement.close();
+        connection.close();
     }
 }

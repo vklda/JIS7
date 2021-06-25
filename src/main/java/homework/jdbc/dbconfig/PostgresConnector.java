@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Properties;
 
 @AllArgsConstructor
@@ -32,10 +31,4 @@ public class PostgresConnector {
         connection = DriverManager.getConnection(DATABASE_URL, properties);
         return connection;
     }
-
-    public static Statement getStatement() throws SQLException {
-        connection = DriverManager.getConnection(DATABASE_URL, properties);
-        return connection.createStatement();
-    }
-
 }

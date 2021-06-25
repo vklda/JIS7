@@ -14,4 +14,12 @@ public class User {
     private String username;
     private Status status;
     private String email;
+
+    public User(String firstName, String lastName, String username, Status status, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.status = status;
+        this.email = email;
+    }
 }
