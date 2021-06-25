@@ -13,11 +13,14 @@ import java.util.Collection;
 import static homework.jdbc.App.log;
 
 public class UserServiceImpl implements UserService {
+    AddressService addressService = new AddressServiceImpl();
 
     @Override
-    public User create(String firstName, String lastName, String username, Status status, String email) throws SQLException {
-        var sql = "INSERT INTO \"user\" (first_name, last_name, username, status, email) VALUES (?, ?, ?, ?, ?)";
+    public User create(String firstName, String lastName, String username, Status status, String email, Integer addressId) throws SQLException {
+        var sql = "INSERT INTO \"user\" (first_name, last_name, username, status, email, address_id) VALUES (?, ?, ?, ?, ?, ?)";
         var user = new User(firstName, lastName, username, status, email);
+        var address = addressService.getById(addressId);
+        user.setAddress(address);
         insertRowToDataBase(user, sql);
         var id = getLastId();
         user.setId(id);
@@ -43,7 +46,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getById(Integer id) throws SQLException {
-        var sql = "SELECT id, first_name, last_name, username, status, email FROM \"user\" where id = " + id;
+        var sql = "SELECT * FROM \"user\" where id = " + id;
         var connection = getConnection();
         var statement = connection.createStatement();
         var resultSet = statement.executeQuery(sql);
@@ -58,7 +61,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Collection<User> getByFirstAndLastChars(String first, String last) throws SQLException {
         var userList = new ArrayList<User>();
-        var sql = "SELECT id, first_name, last_name, username, status, email FROM \"user\" where first_name LIKE ?";
+        var sql = "SELECT * FROM \"user\" where first_name LIKE ?";
         var statement = PostgresConnector.getConnection().prepareStatement(sql);
         statement.setString(1, first + "%" + last);
         var resultSet = statement.executeQuery();
@@ -83,7 +86,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(User user) throws SQLException {
-        String sql = "UPDATE \"user\" SET first_name = ?, last_name = ?, username = ?, status = ?, email = ? WHERE id = " + user.getId();
+        String sql = "UPDATE \"user\" SET first_name = ?, last_name = ?, username = ?, status = ?, email = ?, address_id = ? WHERE id = " + user.getId();
         insertRowToDataBase(user, sql);
     }
 
@@ -113,6 +116,7 @@ public class UserServiceImpl implements UserService {
         user.setUsername(resultSet.getString(4));
         user.setStatus(Status.valueOf(resultSet.getString(5)));
         user.setEmail(resultSet.getString(6));
+        user.setAddress(addressService.getById(resultSet.getInt(7)));
         return user;
     }
 
@@ -124,6 +128,7 @@ public class UserServiceImpl implements UserService {
         statement.setString(3, user.getUsername());
         statement.setString(4, user.getStatus().name());
         statement.setString(5, user.getEmail());
+        statement.setInt(6, user.getAddress().getId());
         int rowsInserted = statement.executeUpdate();
         if (rowsInserted > 0) {
             log.info("user has been updated/created successfully");

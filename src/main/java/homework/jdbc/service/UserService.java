@@ -8,7 +8,7 @@ import java.util.Collection;
 
 public interface UserService {
 
-    User create(String firstName, String lastName, String username, Status status, String email) throws SQLException;
+    User create(String firstName, String lastName, String username, Status status, String email, Integer addressId) throws SQLException;
 
     Collection<User> findAll() throws SQLException;
 
