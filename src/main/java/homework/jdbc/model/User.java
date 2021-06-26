@@ -14,6 +14,7 @@ public class User {
     private String username;
     private Status status;
     private String email;
+    private Address address;
 
     public User(String firstName, String lastName, String username, Status status, String email) {
         this.firstName = firstName;
