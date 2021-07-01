@@ -24,7 +24,7 @@ public class App {
                 "1111",
                 "student1@gmail.com");
 
-        studentService.addStudentToLecturer(student, lecturer);
+        studentService.addLecturerToStudent(student, lecturer);
 
         var lecturer2 = lecturerService.create("Artsemi",
                 "Stankevich",
@@ -33,14 +33,14 @@ public class App {
                 "lecturer2@gmail.com",
                 250D);
         System.out.println(lecturer2);
+        System.out.println(lecturer);
+        System.out.println(student);
 
-
-        var allStudents = studentService.findAllStudents();
-        allStudents.forEach(System.out::println);
-
-        System.out.println("hello");
 
         var allLecturers = lecturerService.findAllLecturers();
         allLecturers.forEach(System.out::println);
+        var allStudents = studentService.findAllStudents();
+        allStudents.forEach(System.out::println);
+        System.out.println(studentService.getById(1L));
     }
 }

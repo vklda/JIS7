@@ -2,7 +2,6 @@ package homework.hibernate.service;
 
 import homework.hibernate.dao.HibernateUtil;
 import homework.hibernate.entity.Lecturer;
-import homework.hibernate.entity.Student;
 
 import java.util.List;
 
@@ -33,6 +32,40 @@ public class LecturerServiceImpl implements LecturerService {
         session.getTransaction().commit();
         session.close();
         return resultList;
+    }
+
+    @Override
+    public Lecturer getById(Long id) {
+        var session = new HibernateUtil().getSessionFactory().openSession();
+        session.beginTransaction();
+
+        var lecturer = session.get(Lecturer.class, id);
+
+        session.getTransaction().commit();
+        session.close();
+        return lecturer;
+    }
+
+    @Override
+    public void update(Lecturer lecturer) {
+        var session = new HibernateUtil().getSessionFactory().openSession();
+        session.beginTransaction();
+
+        session.update(lecturer);
+
+        session.getTransaction().commit();
+        session.close();
+    }
+
+    @Override
+    public void remove(Lecturer lecturer) {
+        var session = new HibernateUtil().getSessionFactory().openSession();
+        session.beginTransaction();
+
+        session.remove(lecturer);
+
+        session.getTransaction().commit();
+        session.close();
     }
 
     private Lecturer buildLecturer(String firstName, String secondName, String login, String password, String email, Double salary) {

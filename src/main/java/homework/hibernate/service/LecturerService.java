@@ -8,4 +8,10 @@ public interface LecturerService {
     Lecturer create(String firstName, String secondName, String login, String password, String email, Double salary);
 
     List<Lecturer> findAllLecturers();
+
+    Lecturer getById(Long id);
+
+    void update(Lecturer lecturer);
+
+    void remove(Lecturer lecturer);
 }

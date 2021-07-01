@@ -3,13 +3,8 @@ package homework.hibernate.service;
 import homework.hibernate.dao.HibernateUtil;
 import homework.hibernate.entity.Lecturer;
 import homework.hibernate.entity.Student;
-import org.hibernate.Hibernate;
 
-import javax.persistence.EntityGraph;
-import javax.persistence.EntityManager;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class StudentServiceImpl implements StudentService {
 
@@ -26,8 +21,9 @@ public class StudentServiceImpl implements StudentService {
         session.close();
         return student;
     }
+
     @Override
-    public void addStudentToLecturer(Student student, Lecturer lecturer) {
+    public void addLecturerToStudent(Student student, Lecturer lecturer) {
         var session = new HibernateUtil().getSessionFactory().openSession();
         session.beginTransaction();
 
@@ -35,6 +31,40 @@ public class StudentServiceImpl implements StudentService {
 
         session.update(student);
         session.update(lecturer);
+
+        session.getTransaction().commit();
+        session.close();
+    }
+
+    @Override
+    public Student getById(Long id) {
+        var session = new HibernateUtil().getSessionFactory().openSession();
+        session.beginTransaction();
+
+        var student = session.get(Student.class, id);
+
+        session.getTransaction().commit();
+        session.close();
+        return student;
+    }
+
+    @Override
+    public void update(Student student) {
+        var session = new HibernateUtil().getSessionFactory().openSession();
+        session.beginTransaction();
+
+        session.update(student);
+
+        session.getTransaction().commit();
+        session.close();
+    }
+
+    @Override
+    public void remove(Student student) {
+        var session = new HibernateUtil().getSessionFactory().openSession();
+        session.beginTransaction();
+
+        session.remove(student);
 
         session.getTransaction().commit();
         session.close();

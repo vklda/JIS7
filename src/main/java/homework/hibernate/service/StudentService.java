@@ -10,5 +10,11 @@ public interface StudentService {
 
     List<Student> findAllStudents();
 
-    void addStudentToLecturer(Student student, Lecturer lecturer);
+    void addLecturerToStudent(Student student, Lecturer lecturer);
+
+    Student getById(Long id);
+
+    void update(Student student);
+
+    void remove(Student student);
 }
