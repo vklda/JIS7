@@ -26,21 +26,17 @@ public class App {
 
         studentService.addLecturerToStudent(student, lecturer);
 
-        var lecturer2 = lecturerService.create("Artsemi",
+        lecturerService.create("Artsemi",
                 "Stankevich",
                 "artik",
                 "qwerty",
                 "lecturer2@gmail.com",
                 250D);
-        System.out.println(lecturer2);
-        System.out.println(lecturer);
-        System.out.println(student);
-
 
         var allLecturers = lecturerService.findAllLecturers();
         allLecturers.forEach(System.out::println);
+
         var allStudents = studentService.findAllStudents();
         allStudents.forEach(System.out::println);
-        System.out.println(studentService.getById(1L));
     }
 }
