@@ -79,6 +79,7 @@ public class LecturerServiceImpl implements LecturerService {
         lecturer.setLogin(login);
         lecturer.setPassword(password);
         lecturer.setEmail(email);
+        lecturer.setSalary(salary);
 
         return lecturer;
     }
