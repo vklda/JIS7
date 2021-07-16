@@ -11,7 +11,7 @@ public interface LecturerService {
 
     Lecturer getById(Long id);
 
-    void update(Lecturer lecturer);
+    Lecturer update(Lecturer lecturer);
 
     void remove(Lecturer lecturer);
 }

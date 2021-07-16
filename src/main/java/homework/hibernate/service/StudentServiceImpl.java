@@ -19,6 +19,7 @@ public class StudentServiceImpl implements StudentService {
 
         session.getTransaction().commit();
         session.close();
+
         return student;
     }
 
@@ -45,11 +46,12 @@ public class StudentServiceImpl implements StudentService {
 
         session.getTransaction().commit();
         session.close();
+
         return student;
     }
 
     @Override
-    public void update(Student student) {
+    public Student update(Student student) {
         var session = new HibernateUtil().getSessionFactory().openSession();
         session.beginTransaction();
 
@@ -57,6 +59,8 @@ public class StudentServiceImpl implements StudentService {
 
         session.getTransaction().commit();
         session.close();
+
+        return student;
     }
 
     @Override
@@ -75,20 +79,23 @@ public class StudentServiceImpl implements StudentService {
         var session = new HibernateUtil().getSessionFactory().openSession();
         session.beginTransaction();
 
-        //List<Student> resultList = session.createQuery("SELECT s FROM Student s left join s.lecturer", Student.class).getResultList(); // - the same
         List<Student> resultList = session.createQuery("from Student").getResultList();
+
         session.getTransaction().commit();
         session.close();
+
         return resultList;
     }
 
     private Student buildStudent(String firstName, String secondName, String login, String password, String email) {
         var student = new Student();
+
         student.setFirstName(firstName);
         student.setSecondName(secondName);
         student.setLogin(login);
         student.setPassword(password);
         student.setEmail(email);
+
         return student;
     }
 

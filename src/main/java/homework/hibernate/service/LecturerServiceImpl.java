@@ -43,11 +43,12 @@ public class LecturerServiceImpl implements LecturerService {
 
         session.getTransaction().commit();
         session.close();
+
         return lecturer;
     }
 
     @Override
-    public void update(Lecturer lecturer) {
+    public Lecturer update(Lecturer lecturer) {
         var session = new HibernateUtil().getSessionFactory().openSession();
         session.beginTransaction();
 
@@ -55,6 +56,8 @@ public class LecturerServiceImpl implements LecturerService {
 
         session.getTransaction().commit();
         session.close();
+
+        return lecturer;
     }
 
     @Override
@@ -70,11 +73,13 @@ public class LecturerServiceImpl implements LecturerService {
 
     private Lecturer buildLecturer(String firstName, String secondName, String login, String password, String email, Double salary) {
         var lecturer = new Lecturer();
+
         lecturer.setFirstName(firstName);
         lecturer.setSecondName(secondName);
         lecturer.setLogin(login);
         lecturer.setPassword(password);
         lecturer.setEmail(email);
+
         return lecturer;
     }
 }
