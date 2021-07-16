@@ -11,9 +11,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-public class HibernateUtil {
+public class HibernateSessionFactoryUtil {
 
-    private SessionFactory sessionFactory;
+    private static SessionFactory sessionFactory;
 
     public SessionFactory getSessionFactory() {
         if (sessionFactory == null) {

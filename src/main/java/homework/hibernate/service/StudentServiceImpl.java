@@ -1,6 +1,6 @@
 package homework.hibernate.service;
 
-import homework.hibernate.dao.HibernateUtil;
+import homework.hibernate.dao.HibernateSessionFactoryUtil;
 import homework.hibernate.entity.Lecturer;
 import homework.hibernate.entity.Student;
 
@@ -10,7 +10,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student create(String firstName, String secondName, String login, String password, String email) {
-        var session = new HibernateUtil().getSessionFactory().openSession();
+        var session = new HibernateSessionFactoryUtil().getSessionFactory().openSession();
         session.beginTransaction();
 
         var student = buildStudent(firstName, secondName, login, password, email);
@@ -25,7 +25,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void addLecturerToStudent(Student student, Lecturer lecturer) {
-        var session = new HibernateUtil().getSessionFactory().openSession();
+        var session = new HibernateSessionFactoryUtil().getSessionFactory().openSession();
         session.beginTransaction();
 
         student.setLecturer(lecturer);
@@ -39,7 +39,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student getById(Long id) {
-        var session = new HibernateUtil().getSessionFactory().openSession();
+        var session = new HibernateSessionFactoryUtil().getSessionFactory().openSession();
         session.beginTransaction();
 
         var student = session.get(Student.class, id);
@@ -52,7 +52,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student update(Student student) {
-        var session = new HibernateUtil().getSessionFactory().openSession();
+        var session = new HibernateSessionFactoryUtil().getSessionFactory().openSession();
         session.beginTransaction();
 
         session.update(student);
@@ -65,7 +65,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void remove(Student student) {
-        var session = new HibernateUtil().getSessionFactory().openSession();
+        var session = new HibernateSessionFactoryUtil().getSessionFactory().openSession();
         session.beginTransaction();
 
         session.remove(student);
@@ -76,7 +76,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<Student> findAllStudents() {
-        var session = new HibernateUtil().getSessionFactory().openSession();
+        var session = new HibernateSessionFactoryUtil().getSessionFactory().openSession();
         session.beginTransaction();
 
         List<Student> resultList = session.createQuery("from Student").getResultList();

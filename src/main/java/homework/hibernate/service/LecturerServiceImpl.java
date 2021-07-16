@@ -1,6 +1,6 @@
 package homework.hibernate.service;
 
-import homework.hibernate.dao.HibernateUtil;
+import homework.hibernate.dao.HibernateSessionFactoryUtil;
 import homework.hibernate.entity.Lecturer;
 
 import java.util.List;
@@ -9,7 +9,7 @@ public class LecturerServiceImpl implements LecturerService {
 
     @Override
     public Lecturer create(String firstName, String secondName, String login, String password, String email, Double salary) {
-        var session = new HibernateUtil().getSessionFactory().openSession();
+        var session = new HibernateSessionFactoryUtil().getSessionFactory().openSession();
         session.beginTransaction();
 
         var lecturer = buildLecturer(firstName, secondName, login, password, email, salary);
@@ -24,7 +24,7 @@ public class LecturerServiceImpl implements LecturerService {
 
     @Override
     public List<Lecturer> findAllLecturers() {
-        var session = new HibernateUtil().getSessionFactory().openSession();
+        var session = new HibernateSessionFactoryUtil().getSessionFactory().openSession();
         session.beginTransaction();
 
         List<Lecturer> resultList = session.createQuery("from Lecturer ").getResultList();
@@ -36,7 +36,7 @@ public class LecturerServiceImpl implements LecturerService {
 
     @Override
     public Lecturer getById(Long id) {
-        var session = new HibernateUtil().getSessionFactory().openSession();
+        var session = new HibernateSessionFactoryUtil().getSessionFactory().openSession();
         session.beginTransaction();
 
         var lecturer = session.get(Lecturer.class, id);
@@ -49,7 +49,7 @@ public class LecturerServiceImpl implements LecturerService {
 
     @Override
     public Lecturer update(Lecturer lecturer) {
-        var session = new HibernateUtil().getSessionFactory().openSession();
+        var session = new HibernateSessionFactoryUtil().getSessionFactory().openSession();
         session.beginTransaction();
 
         session.update(lecturer);
@@ -62,7 +62,7 @@ public class LecturerServiceImpl implements LecturerService {
 
     @Override
     public void remove(Lecturer lecturer) {
-        var session = new HibernateUtil().getSessionFactory().openSession();
+        var session = new HibernateSessionFactoryUtil().getSessionFactory().openSession();
         session.beginTransaction();
 
         session.remove(lecturer);
